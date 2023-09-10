@@ -8,19 +8,17 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-
 app.get('/api', (req: Request, res: Response) => {
   // Parse query parameters
   const slackName = req.query.slack_name as string;
   const track = req.query.track as string;
 
-  // Get the current day of the weeks
+  // Get the current day of the week
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const currentDay = daysOfWeek[new Date().getDay()];
 
-  // Get the current UTC time
-  const currentUTCTime = new Date().toISOString();
-
+  // Get the current UTC time formatted as specified
+  const currentUTCTime = new Date().toISOString().split('.')[0] + 'Z';
 
   const response = {
     slack_name: slackName,
@@ -32,10 +30,8 @@ app.get('/api', (req: Request, res: Response) => {
     status_code: 200,
   };
 
-
   res.status(200).json(response);
 });
-
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
